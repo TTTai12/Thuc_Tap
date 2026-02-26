@@ -26,19 +26,13 @@ namespace TT_ECommerce.Data
         public virtual DbSet<ThongKe> ThongKes { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-
-
-                optionsBuilder.UseSqlServer("Data Source=HORSEY;Initial Catalog=TT_ECommerce;Persist Security Info=True;User ID=sa;Password=***********;Encrypt=True;Trust Server Certificate=True"); // Use your actual connection string here
-
-
-
-            }
-        }
-
+      protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    if (!optionsBuilder.IsConfigured)
+    {
+        // Không cấu hình gì ở đây, DbContext sẽ dùng cấu hình từ Program.cs (UseSqlite)
+    }
+}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Ensure base method is called

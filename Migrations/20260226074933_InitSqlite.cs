@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TT_ECommerce.Migrations
 {
     /// <inheritdoc />
-    public partial class DB : Migration
+    public partial class InitSqlite : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,10 +15,10 @@ namespace TT_ECommerce.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,21 +29,21 @@ namespace TT_ECommerce.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,17 +54,17 @@ namespace TT_ECommerce.Migrations
                 name: "tb_Contact",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    Website = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
-                    IsRead = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 150, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 150, nullable: true),
+                    Website = table.Column<string>(type: "TEXT", nullable: true),
+                    Message = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
+                    IsRead = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Modifiedby = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -75,21 +75,21 @@ namespace TT_ECommerce.Migrations
                 name: "tb_Order",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Code = table.Column<string>(type: "TEXT", nullable: true),
+                    CustomerName = table.Column<string>(type: "TEXT", nullable: true),
+                    Phone = table.Column<string>(type: "TEXT", nullable: true),
+                    Address = table.Column<string>(type: "TEXT", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TypePayment = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: true)
+                    Modifiedby = table.Column<string>(type: "TEXT", nullable: true),
+                    TypePayment = table.Column<int>(type: "INTEGER", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,19 +100,19 @@ namespace TT_ECommerce.Migrations
                 name: "tb_Posts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Detail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    SeoTitle = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    SeoDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    SeoKeywords = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 150, nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Detail = table.Column<string>(type: "TEXT", nullable: true),
+                    Image = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    SeoTitle = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    SeoDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    SeoKeywords = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Modifiedby = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -123,19 +123,19 @@ namespace TT_ECommerce.Migrations
                 name: "tb_ProductCategory",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Icon = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    SeoTitle = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    SeoDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    SeoKeywords = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 150, nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Icon = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    SeoTitle = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    SeoDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    SeoKeywords = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Alias = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true, defaultValue: "")
+                    Modifiedby = table.Column<string>(type: "TEXT", nullable: true),
+                    Alias = table.Column<string>(type: "TEXT", maxLength: 150, nullable: true, defaultValue: "")
                 },
                 constraints: table =>
                 {
@@ -146,9 +146,9 @@ namespace TT_ECommerce.Migrations
                 name: "tb_Subscribe",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 150, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
@@ -160,9 +160,9 @@ namespace TT_ECommerce.Migrations
                 name: "tb_SystemSetting",
                 columns: table => new
                 {
-                    SettingKey = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SettingValue = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
-                    SettingDescription = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true)
+                    SettingKey = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    SettingValue = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
+                    SettingDescription = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -173,10 +173,10 @@ namespace TT_ECommerce.Migrations
                 name: "ThongKes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     ThoiGian = table.Column<DateTime>(type: "datetime", nullable: false),
-                    SoTruyCap = table.Column<long>(type: "bigint", nullable: false)
+                    SoTruyCap = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -187,11 +187,11 @@ namespace TT_ECommerce.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -208,11 +208,11 @@ namespace TT_ECommerce.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -229,10 +229,10 @@ namespace TT_ECommerce.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -249,8 +249,8 @@ namespace TT_ECommerce.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -273,10 +273,10 @@ namespace TT_ECommerce.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -293,32 +293,32 @@ namespace TT_ECommerce.Migrations
                 name: "tb_Product",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    ProductCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Detail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PriceSale = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    IsHome = table.Column<bool>(type: "bit", nullable: false),
-                    IsSale = table.Column<bool>(type: "bit", nullable: false),
-                    IsFeature = table.Column<bool>(type: "bit", nullable: false),
-                    IsHot = table.Column<bool>(type: "bit", nullable: false),
-                    ProductCategoryId = table.Column<int>(type: "int", nullable: false),
-                    SeoTitle = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    SeoDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    SeoKeywords = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    ProductCode = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Detail = table.Column<string>(type: "TEXT", nullable: true),
+                    Image = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    PriceSale = table.Column<decimal>(type: "decimal(18, 2)", nullable: true),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsHome = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsSale = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsFeature = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsHot = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ProductCategoryId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SeoTitle = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    SeoDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    SeoKeywords = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Modifiedby = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Alias = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    ViewCount = table.Column<int>(type: "int", nullable: false),
-                    OriginalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Modifiedby = table.Column<string>(type: "TEXT", nullable: true),
+                    Alias = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ViewCount = table.Column<int>(type: "INTEGER", nullable: true),
+                    OriginalPrice = table.Column<decimal>(type: "decimal(18, 2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -335,12 +335,12 @@ namespace TT_ECommerce.Migrations
                 name: "tb_OrderDetail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -363,11 +363,11 @@ namespace TT_ECommerce.Migrations
                 name: "tb_ProductImage",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    IsDefault = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Image = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    IsDefault = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -389,8 +389,7 @@ namespace TT_ECommerce.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -416,8 +415,7 @@ namespace TT_ECommerce.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_OrderDetail_OrderId",

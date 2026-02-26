@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -21,9 +21,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 // Cấu hình kết nối đến cơ sở dữ liệu SQL Server
-builder.Services.AddDbContext<TT_ECommerceDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.AddDbContext<TT_ECommerceDbContext>(options =>
+options.UseSqlite(connectionString));
 // Thêm các dịch vụ cho EmailService và OtpService
 builder.Services.AddTransient<EmailService>();
 builder.Services.AddTransient<OtpService>();
@@ -62,7 +63,16 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var db = services.GetRequiredService<TT_ECommerceDbContext>();
+    db.Database.Migrate();
 
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    DbSeeder.SeedAsync(db, userManager, roleManager).GetAwaiter().GetResult();
+}
 // Cấu hình pipeline HTTP
 app.UseHttpsRedirection();
 app.UseStaticFiles();
