@@ -1,0 +1,9 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+
+# local sqlite db should not be baked into image
+tt_ecommerce.db
+**/tt_ecommerce.db
+

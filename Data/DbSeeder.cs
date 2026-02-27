@@ -29,6 +29,39 @@ namespace TT_ECommerce.Data
             var now = DateTime.UtcNow;
             var rnd = new Random();
 
+            // Danh sách ảnh có thật trong wwwroot (đã có sẵn trên GitHub)
+            var productImagePool = new[]
+            {
+                "/imgProducts/1222.jpg",
+                "/imgProducts/LG.png",
+                "/imgProducts/acer.png",
+                "/imgProducts/asus.png",
+                "/imgProducts/msi.png",
+                "/imgProducts/legion5.png",
+                "/imgProducts/heliosneo14.png",
+                "/imgProducts/ip16.png",
+                "/imgProducts/ip16pro.png",
+                "/imgProducts/ip15pro.png",
+                "/imgProducts/tuf.png",
+                "/imgProducts/victus.png",
+                "/imgProducts/samsung-zfold.png",
+                "/imgProducts/zflip.png",
+                "/imgProducts/nitrov15.png"
+            };
+
+            var postImagePool = new[]
+            {
+                "/imgPosts/posts1.jpg",
+                "/imgPosts/posts2.jpg",
+                "/imgPosts/posts3.jpg",
+                "/imgPosts/posts4.jpg",
+                "/imgPosts/posts5.jpg",
+                "/imgPosts/post8.jpg",
+                "/imgPosts/amd.jpg",
+                "/imgPosts/1.jpg",
+                "/imgPosts/avt.jpg"
+            };
+
             // 1. Tạo role
             var roles = new[] { "ADMIN", "USER" };
             foreach (var role in roles)
@@ -113,8 +146,7 @@ namespace TT_ECommerce.Data
                     ProductCode = $"P{i:0000}",
                     Description = $"Demo product {i}",
                     Detail = $"This is demo product {i}.",
-                    // Dùng 1 ảnh mặc định, bạn chỉ cần tạo file wwwroot/imgProducts/no-image.png
-                    Image = "/imgProducts/no-image.png",
+                    Image = productImagePool[rnd.Next(productImagePool.Length)],
                     Price = basePrice,
                     PriceSale = hasSale ? basePrice * 0.9m : null,
                     Quantity = rnd.Next(1, 100),
@@ -153,10 +185,15 @@ namespace TT_ECommerce.Data
                 });
 
                 // 1 ảnh phụ demo
+                var secondary = productImagePool[rnd.Next(productImagePool.Length)];
+                if (secondary == product.Image)
+                {
+                    secondary = productImagePool[(rnd.Next(productImagePool.Length) + 1) % productImagePool.Length];
+                }
                 productImages.Add(new TbProductImage
                 {
                     ProductId = product.Id,
-                    Image = "/imgProducts/no-image-2.png",
+                    Image = secondary,
                     IsDefault = false
                 });
             }
@@ -233,7 +270,7 @@ namespace TT_ECommerce.Data
                     Title = $"Demo Post {i}",
                     Description = $"Demo post {i} description",
                     Detail = $"This is the content of demo post {i}.",
-                    Image = "/imgPosts/no-image.png",
+                    Image = postImagePool[rnd.Next(postImagePool.Length)],
                     SeoTitle = $"Demo Post {i}",
                     SeoDescription = $"Demo post {i} description",
                     SeoKeywords = $"post{i}",
