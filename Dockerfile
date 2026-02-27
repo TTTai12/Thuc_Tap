@@ -1,11 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY ThucTap/TT_ECommerce.csproj ThucTap/
-RUN dotnet restore ThucTap/TT_ECommerce.csproj
+COPY TT_ECommerce.csproj ./
+RUN dotnet restore ./TT_ECommerce.csproj
 
 COPY . .
-RUN dotnet publish ThucTap/TT_ECommerce.csproj -c Release -o /app/publish
+RUN dotnet publish ./TT_ECommerce.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
