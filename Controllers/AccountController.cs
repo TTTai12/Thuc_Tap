@@ -95,15 +95,92 @@ namespace TT_ECommerce.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult VerifyOtp(string email)
+        [HttpGet("LoginAdmin")]
+        public IActionResult LoginAdmin()
         {
-            // Hiển thị trang xác thực OTP
+            return View("Login");
+        }
+
+        [HttpPost("LoginAdmin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoginAdmin(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityUser user;
+                string userEmail = string.Empty;
+
+                if (new EmailAddressAttribute().IsValid(model.UsernameOrEmail))
+                {
+                    user = await _userManager.FindByEmailAsync(model.UsernameOrEmail);
+                    userEmail = model.UsernameOrEmail;
+                }
+                else
+                {
+                    user = await _userManager.FindByNameAsync(model.UsernameOrEmail);
+                    if (user != null)
+                    {
+                        userEmail = user.Email;
+                    }
+                }
+
+                if (user != null)
+                {
+                    // Kiểm tra xem user có role ADMIN không
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (!roles.Contains("ADMIN"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Bạn không có quyền truy cập Admin.");
+                        return View("Login", model);
+                    }
+
+                    var otpVerifiedCookie = Request.Cookies[$"OtpVerified_{user.Id}"];
+                    if (otpVerifiedCookie != null)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    }
+
+                    var passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
+                    if (passwordCheck)
+                    {
+                        var otp = _otpService.GenerateOtp();
+                        try
+                        {
+                            await _emailService.SendEmailAsync(userEmail, "OTP Verification", $"Your OTP is: {otp}");
+                            HttpContext.Session.SetString("OtpEmail", userEmail);
+                            HttpContext.Session.SetString("Otp", otp);
+                            return RedirectToAction("VerifyOtp", new { email = userEmail, isAdmin = true });
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError(string.Empty, "Error sending OTP email.");
+                            return View("Login", model);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                }
+            }
+
+            return View("Login", model);
+        }
+
+        [HttpGet]
+        public IActionResult VerifyOtp(string email, bool isAdmin = false)
+        {
+            ViewBag.IsAdmin = isAdmin;
             return View(new VerifyOtpViewModel { Email = email });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyOtp(VerifyOtpViewModel model)
+        public async Task<IActionResult> VerifyOtp(VerifyOtpViewModel model, bool isAdmin = false)
         {
             if (ModelState.IsValid)
             {
@@ -131,6 +208,12 @@ namespace TT_ECommerce.Controllers
 
                     Response.Cookies.Append($"OtpVerified_{user.Id}", "true", cookieOptions);
 
+                    // Nếu đăng nhập từ admin, redirect tới admin dashboard
+                    if (isAdmin)
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -139,6 +222,7 @@ namespace TT_ECommerce.Controllers
                 }
             }
 
+            ViewBag.IsAdmin = isAdmin;
             return View(model);
         }
 
