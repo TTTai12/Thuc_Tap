@@ -502,7 +502,7 @@ public async Task<IActionResult> CreateAdminTemp()
     var user = new IdentityUser
     {
         UserName = "admin2",
-        Email = "admin2@example.com",
+        Email = "tientantai12@gmail.com",
         EmailConfirmed = true
     };
 
