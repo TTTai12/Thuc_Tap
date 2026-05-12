@@ -496,6 +496,24 @@ namespace TT_ECommerce.Controllers
 
 
 
+[HttpGet("CreateAdminTemp")]
+public async Task<IActionResult> CreateAdminTemp()
+{
+    var user = new IdentityUser
+    {
+        UserName = "admin2",
+        Email = "admin2@example.com",
+        EmailConfirmed = true
+    };
 
+    var result = await _userManager.CreateAsync(user, "Admin@123");
+    if (result.Succeeded)
+    {
+        await _userManager.AddToRoleAsync(user, "ADMIN");
+        return Content("Done! Username: admin2 | Password: Admin@123");
+    }
+
+    return Content("Failed: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+}
     }
 }
