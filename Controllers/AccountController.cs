@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -143,20 +143,22 @@ namespace TT_ECommerce.Controllers
 
                     var passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
                     if (passwordCheck)
-                    {
-                        var otp = _otpService.GenerateOtp();
-                        try
-                        {
-                            await _emailService.SendEmailAsync(userEmail, "OTP Verification", $"Your OTP is: {otp}");
-                            HttpContext.Session.SetString("OtpEmail", userEmail);
-                            HttpContext.Session.SetString("Otp", otp);
-                            return RedirectToAction("VerifyOtp", new { email = userEmail, isAdmin = true });
-                        }
-                        catch (Exception ex)
-                        {
-                            ModelState.AddModelError(string.Empty, "Error sending OTP email.");
-                            return View("Login", model);
-                        }
+                     {
+                    //     var otp = _otpService.GenerateOtp();
+                    //     try
+                    //     {
+                    //         await _emailService.SendEmailAsync(userEmail, "OTP Verification", $"Your OTP is: {otp}");
+                    //         HttpContext.Session.SetString("OtpEmail", userEmail);
+                    //         HttpContext.Session.SetString("Otp", otp);
+                    //         return RedirectToAction("VerifyOtp", new { email = userEmail, isAdmin = true });
+                    //     }
+                    //     catch (Exception ex)
+                    //     {
+                    //         ModelState.AddModelError(string.Empty, "Error sending OTP email.");
+                    //         return View("Login", model);
+                    //     }
+                     await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
+    return RedirectToAction("Index", "Home", new { area = "Admin" });
                     }
                     else
                     {
